@@ -1,0 +1,16 @@
+<h1><%= @location.name %></h1>
+
+<%= link_to "← Back to Locations", locations_path %>
+
+<h2>Weather Information</h2>
+
+<p><strong>Coordinates:</strong> <%= @location.lat %>, <%= @location.lon %></p>
+<p><strong>Forecast Office:</strong> <%= @location.forecast_office %></p>
+<p><strong>Grid:</strong> <%= @location.grid_x %>, <%= @location.grid_y %></p>
+
+<h3>Current Forecast</h3>
+<% if @weather_data["properties"] && @weather_data["properties"]["periods"] %>
+  <% first_period = @weather_data["properties"]["periods"].first %>
+  <p><strong><%= first_period["name"] %>:</strong> <%= first_period["detailedForecast"] %></p>
+  <p><strong>Temperature:</strong> <%= first_period["temperature"] %>°<%= first_period["temperatureUnit"] %></p>
+<% end %>
