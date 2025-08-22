@@ -1,6 +1,12 @@
 class LocationsController < ApplicationController
   class WeatherApiError < StandardError; end
 
+  before_action do
+    if (@instrument = params[:instrument].present?)
+      request.variant = :instrumented
+    end
+  end
+
   def index
     @locations = Location.all
     @location = Location.new
@@ -13,13 +19,17 @@ class LocationsController < ApplicationController
     geocode = geocode_location(@location.name)
 
     # GET request to api.weather.gov
-    metadata = fetch_weather_metadata(geocode[:lat], geocode[:lon])
+    metadata = maybe_instrument(title: "Fetch weather metadata") {
+      fetch_weather_metadata(geocode[:lat], geocode[:lon])
+    }
 
     # Active Record UPDATE
     update_location_data(geocode, metadata)
 
     # GET request to api.weather.gov
-    @weather_data = fetch_weather_forecast(metadata["properties"]["forecast"])
+    @weather_data = maybe_instrument(title: "Fetch weather forecast") {
+       fetch_weather_forecast(metadata["properties"]["forecast"])
+    }
   rescue WeatherApiError => e
     render text: e.message, status: 500
   end
@@ -30,6 +40,14 @@ class LocationsController < ApplicationController
 
   private
 
+  def maybe_instrument(*)
+    if @instrument
+      Skylight.instrument(*) { yield }
+    else
+      yield
+    end
+  end
+  
   def location_params
     params.require(:location).permit(:name)
   end
