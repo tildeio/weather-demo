@@ -292,6 +292,8 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
+    skylight (6.0.4)
+      activesupport (>= 5.2.0)
     solid_cable (3.0.12)
       actioncable (>= 7.2)
       activejob (>= 7.2)
@@ -382,6 +384,7 @@ DEPENDENCIES
   rails (~> 8.0.2, >= 8.0.2.1)
   rubocop-rails-omakase
   selenium-webdriver
+  skylight
   solid_cable
   solid_cache
   solid_queue
