@@ -1,5 +1,7 @@
 # README
 
+[![View performance data on Skylight](https://badges.skylight.io/status/EygnFAjuzk8r.svg)](https://oss.skylight.io/app/applications/EygnFAjuzk8r)
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
